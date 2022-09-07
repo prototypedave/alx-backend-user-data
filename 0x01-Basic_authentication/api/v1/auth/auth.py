@@ -39,4 +39,3 @@ class Auth:
         """ request object
         """
         return None
-
