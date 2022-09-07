@@ -26,7 +26,8 @@ elif AUTH_TYPE == 'basic_auth':
 def before_request():
     """ Request validation!
     """
-    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/']
     if auth is None or not auth.require_auth(request.path, excluded_paths):
         return
     if auth.authorization_header(request) is None:
