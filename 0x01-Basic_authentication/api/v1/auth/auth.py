@@ -14,7 +14,6 @@ class Auth:
         """
         if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
-        
         if path[-1] != '/':
             path += '/'
         for i in excluded_paths:
@@ -37,5 +36,7 @@ class Auth:
 
 
     def current_user(self, request=None) -> TypeVar('User'):
-        pass
+        """ request object
+        """
+        return None
 
