@@ -5,8 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
 from user import Base, User
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class DB:
@@ -37,3 +38,27 @@ class DB:
         self._session.add(addUser)
         self._session.commit()
         return addUser
+
+    def find_user_by(self, **kwargs):
+        """Find user
+        """
+        try:
+            search_record = self._session.query(User).filter_by(**kwargs).first()
+        except TypeError:
+            raise InvalidRequestError
+        if search_record is None:
+            raise NoResultFound
+        return search_record
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """ updates a user
+        """
+        user_record = self.find_user_by(id=user_id)
+        for i, value in kwargs.items():
+            if hasattr(user_record, i):
+                setattr(user_record, i, value)
+            else:
+                raise ValueError
+
+        self._session.commit()
+        return None
